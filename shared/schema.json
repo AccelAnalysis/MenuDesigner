@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://accel-analysis.github.io/digital-menu-studio/schema.json",
+  "title": "Digital Menu Studio Config",
+  "type": "object",
+  "required": ["version", "updatedAt", "theme", "canvas", "groups"],
+  "properties": {
+    "id": { "type": "string", "description": "Unique identifier for the menu config" },
+    "name": { "type": "string", "minLength": 1 },
+    "theme": { "type": "string", "enum": ["default", "fast-casual", "fine-dining", "custom"] },
+    "version": { "type": "integer", "minimum": 1 },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "canvas": {
+      "type": "object",
+      "required": ["width", "height", "background", "gridSize"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 640 },
+        "height": { "type": "integer", "minimum": 360 },
+        "background": { "type": "string" },
+        "gridSize": { "type": "integer", "minimum": 4 }
+      }
+    },
+    "groups": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/menuGroup" }
+    },
+    "branding": {
+      "type": "object",
+      "properties": {
+        "logoUrl": { "type": "string" },
+        "primaryColor": { "type": "string" },
+        "secondaryColor": { "type": "string" },
+        "accentColor": { "type": "string" }
+      }
+    }
+  },
+  "definitions": {
+    "menuGroup": {
+      "type": "object",
+      "required": ["id", "name", "slides"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "schedule": {
+          "type": "object",
+          "properties": {
+            "days": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] }
+            },
+            "start": { "type": "string", "pattern": "^([0-1]?\\d|2[0-3]):[0-5]\\d$" },
+            "end": { "type": "string", "pattern": "^([0-1]?\\d|2[0-3]):[0-5]\\d$" }
+          }
+        },
+        "slides": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/slide" }
+        }
+      }
+    },
+    "slide": {
+      "type": "object",
+      "required": ["id", "title", "duration", "tiles"],
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "duration": { "type": "integer", "minimum": 3 },
+        "layout": { "type": "string", "enum": ["freeform", "two-column", "hero"] },
+        "background": { "type": "string" },
+        "tiles": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/tile" }
+        }
+      }
+    },
+    "tile": {
+      "type": "object",
+      "required": ["id", "type", "position", "content"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["item", "price-board", "hero", "qr", "video"]
+        },
+        "position": {
+          "type": "object",
+          "required": ["x", "y", "width", "height"],
+          "properties": {
+            "x": { "type": "number" },
+            "y": { "type": "number" },
+            "width": { "type": "number", "minimum": 1 },
+            "height": { "type": "number", "minimum": 1 },
+            "rotation": { "type": "number" }
+          }
+        },
+        "content": {
+          "type": "object",
+          "properties": {
+            "heading": { "type": "string" },
+            "subheading": { "type": "string" },
+            "body": { "type": "string" },
+            "price": { "type": "string" },
+            "badges": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "qrUrl": { "type": "string" },
+            "videoUrl": { "type": "string" }
+          }
+        },
+        "style": {
+          "type": "object",
+          "properties": {
+            "backgroundColor": { "type": "string" },
+            "textColor": { "type": "string" },
+            "accentColor": { "type": "string" },
+            "fontSize": { "type": "number", "minimum": 8 },
+            "fontFamily": { "type": "string" },
+            "textAlign": { "type": "string", "enum": ["left", "center", "right"] }
+          }
+        },
+        "media": {
+          "type": ["null", "object"],
+          "properties": {
+            "type": { "type": "string", "enum": ["image", "video"] },
+            "src": { "type": "string" },
+            "fit": { "type": "string", "enum": ["cover", "contain"] },
+            "loop": { "type": "boolean" }
+          }
+        }
+      }
+    }
+  }
+}

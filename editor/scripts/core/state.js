@@ -1,22 +1,49 @@
 import { createStore } from 'zustand/vanilla';
-import { createMenuGroup } from './models.js';
+import { HISTORY_LIMIT } from './config.js';
+import { createMenuConfig } from './models.js';
 
-const initialGroup = createMenuGroup({ name: 'Main Menu' });
+const clone = (value) =>
+  typeof structuredClone === 'function'
+    ? structuredClone(value)
+    : JSON.parse(JSON.stringify(value));
+
+const initialConfig = createMenuConfig();
+
+export const buildInitialSnapshot = (config) => ({
+  config,
+  activeGroupId: config.groups[0]?.id ?? null,
+  activeSlideId: config.groups[0]?.slides[0]?.id ?? null,
+  dirtySince: null,
+});
+
+const pushHistory = (state, nextSnapshot) => ({
+  snapshot: nextSnapshot,
+  __history: [...state.__history, state.snapshot].slice(-HISTORY_LIMIT),
+  __future: [],
+});
+
+const stampSnapshot = (snapshot) => {
+  const timestamp = new Date().toISOString();
+  snapshot.config.version = (snapshot.config.version ?? 1) + 1;
+  snapshot.config.updatedAt = timestamp;
+  snapshot.dirtySince = snapshot.dirtySince ?? timestamp;
+  return snapshot;
+};
 
 export const editorState = createStore((set) => ({
-  snapshot: {
-    groups: [initialGroup],
-    activeGroupId: initialGroup.id,
-    activeSlideId: initialGroup.slides[0].id,
-  },
+  snapshot: buildInitialSnapshot(initialConfig),
   __history: [],
   __future: [],
-  updateSnapshot(partial) {
-    set((state) => ({
-      __history: [...state.__history, state.snapshot],
-      __future: [],
-      snapshot: { ...state.snapshot, ...partial },
-    }));
+  remoteStatus: 'idle',
+  mutateSnapshot(mutator) {
+    set((state) => {
+      const draft = clone(state.snapshot);
+      const result = mutator(draft) ?? draft;
+      return pushHistory(state, stampSnapshot(result));
+    });
+  },
+  replaceSnapshot(nextSnapshot) {
+    set((state) => pushHistory(state, stampSnapshot(clone(nextSnapshot))));
   },
   undo() {
     set((state) => {
@@ -36,9 +63,21 @@ export const editorState = createStore((set) => ({
       const [next, ...rest] = state.__future;
       return {
         snapshot: next,
-        __history: [...state.__history, state.snapshot],
+        __history: [...state.__history, state.snapshot].slice(-HISTORY_LIMIT),
         __future: rest,
       };
     });
   },
+  setRemoteStatus(status) {
+    set((state) => ({ ...state, remoteStatus: status }));
+  },
 }));
+
+export const getActiveGroup = (snapshot) =>
+  snapshot.config.groups.find((group) => group.id === snapshot.activeGroupId) ??
+  snapshot.config.groups[0];
+
+export const getActiveSlide = (snapshot) => {
+  const group = getActiveGroup(snapshot);
+  return group?.slides.find((slide) => slide.id === snapshot.activeSlideId) ?? group?.slides[0];
+};
