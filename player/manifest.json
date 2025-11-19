@@ -1,6 +1,7 @@
 {
   "id": "digital-menu-player",
   "name": "Digital Menu Player",
+  "id": "digital-menu-player",
   "short_name": "Menu Player",
   "description": "Installable player for Digital Menu Studio playlists.",
   "display": "standalone",
@@ -25,3 +26,8 @@
     }
   ]
 }
+
+
+
+
+

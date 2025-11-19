@@ -38,9 +38,35 @@ const postMessageToServiceWorker = async (payload) => {
 };
 
 export const registerServiceWorker = () => {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/player/service-worker.js');
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/player/service-worker.js');
   }
+ };
+
+export const cacheSchedule = async (configUrl, data, metadata = {}) => {
+  if (!configUrl) return null;
+  const url = normalizeUrl(configUrl);
+  const store = await readStore();
+  const now = Date.now();
+  const record = {
+    data,
+    cachedAt: now,
+    etag: metadata.etag || null,
+    refreshInterval: metadata.refreshInterval || null,
+    expiresAt: metadata.refreshInterval ? now + metadata.refreshInterval : null,
+  };
+  store.entries[url] = record;
+  const keys = Object.keys(store.entries);
+  if (keys.length > MAX_ENTRIES) {
+    keys
+      .sort((a, b) => (store.entries[a].cachedAt || 0) - (store.entries[b].cachedAt || 0))
+      .slice(0, keys.length - MAX_ENTRIES)
+      .forEach((key) => delete store.entries[key]);
+  }
+  await writeStore(store);
+  dispatchCacheEvent({ configUrl: url, record });
+  await postMessageToServiceWorker({ type: 'TRACK_CONFIG', url, refreshInterval: record.refreshInterval });
+  return record;
 };
 
 export const cacheSchedule = async (configUrl, data, metadata = {}) => {
