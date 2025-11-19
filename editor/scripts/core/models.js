@@ -17,6 +17,7 @@ const defaultTileStyle = () => ({
   fontSize: 42,
   fontFamily: 'Inter, "Helvetica Neue", Arial, sans-serif',
   textAlign: 'left',
+  layoutVariant: 'classic',
 });
 
 const defaultTileContent = () => ({
@@ -31,7 +32,7 @@ const defaultTileContent = () => ({
 
 export const createTile = ({
   id,
-  type = 'item',
+  type = 'text',
   position = {},
   content = {},
   style = {},

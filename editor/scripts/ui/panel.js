@@ -1,27 +1,43 @@
-import './panel-sections/remote-panel.js';
-import './panel-sections/history-panel.js';
-import './panel-sections/conflict-modal.js';
-import { getActiveGroup } from '../core/state.js';
+import { mountRemotePanel } from './panel-sections/remote-panel.js';
+import { mountHistoryPanel } from './panel-sections/history-panel.js';
+import { mountTileContentPanel } from './panel-sections/tile-content-panel.js';
+import { mountTileStylesPanel } from './panel-sections/tile-styles-panel.js';
 
 export const registerPanel = (store) => {
   const panel = document.getElementById('panel');
+  if (!panel) return;
   panel.innerHTML = `
     <nav class="panel-tabs">
+      <button data-tab="design" class="is-active">Design</button>
       <button data-tab="remote">Live Remote</button>
       <button data-tab="history">History</button>
     </nav>
-    <section id="panel-content"></section>
+    <section id="panel-content">
+      <div class="panel-view" data-view="design"></div>
+      <div class="panel-view" data-view="remote" hidden></div>
+      <div class="panel-view" data-view="history" hidden></div>
+    </section>
   `;
-
-  const content = panel.querySelector('#panel-content');
-  content.dataset.panel = 'remote';
-
-  const render = () => {
-    const { snapshot } = store.getState();
-    const activeGroup = getActiveGroup(snapshot);
-    content.textContent = `Active group: ${activeGroup?.name ?? 'None'}`;
+  const buttons = Array.from(panel.querySelectorAll('.panel-tabs button'));
+  const views = new Map();
+  panel.querySelectorAll('.panel-view').forEach((view) => {
+    views.set(view.dataset.view, view);
+  });
+  const switchTab = (tab) => {
+    buttons.forEach((button) => {
+      button.classList.toggle('is-active', button.dataset.tab === tab);
+    });
+    views.forEach((view, key) => {
+      view.hidden = key !== tab;
+    });
   };
-
-  render();
-  store.subscribe(render);
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => switchTab(button.dataset.tab));
+  });
+  switchTab('design');
+  const designView = views.get('design');
+  mountTileContentPanel(designView, store);
+  mountTileStylesPanel(designView, store);
+  mountRemotePanel(views.get('remote'), store);
+  mountHistoryPanel(views.get('history'), store);
 };

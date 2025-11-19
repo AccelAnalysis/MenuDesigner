@@ -13,6 +13,8 @@ export const configureRemote = (config) => {
   localStorage.setItem(REMOTE_KEY, JSON.stringify(remoteConfig));
 };
 
+export const getRemoteConfig = () => ({ ...remoteConfig });
+
 export const saveToRemote = async () => {
   if (!remoteConfig?.url) return;
   const url = await refreshSignedUrl(remoteConfig.url);
