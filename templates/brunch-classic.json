@@ -1,0 +1,40 @@
+{
+  "id": "template-brunch",
+  "name": "Classic Weekend Brunch",
+  "theme": "default",
+  "groups": [
+    {
+      "id": "g1",
+      "name": "Brunch Menu",
+      "isActive": true,
+      "slides": [
+        {
+          "id": "s1",
+          "name": "Signature Plates",
+          "durationSeconds": 12,
+          "background": { "type": "color", "src": "#1a0d0d" },
+          "tiles": [
+            {
+              "id": "t1",
+              "type": "item",
+              "position": { "x": 0.05, "y": 0.1, "width": 0.44, "height": 0.35 },
+              "content": { "name": "Avocado Toast", "price": 14, "description": "Sourdough, smashed avocado, poached eggs, chili flakes" }
+            },
+            {
+              "id": "t2",
+              "type": "item",
+              "position": { "x": 0.51, "y": 0.1, "width": 0.44, "height": 0.35 },
+              "content": { "name": "Buttermilk Pancakes", "price": 13, "description": "Maple syrup, whipped butter, seasonal berries" }
+            },
+            {
+              "id": "t3",
+              "type": "image",
+              "position": { "x": 0.05, "y": 0.5, "width": 0.9, "height": 0.45 },
+              "content": { "src": "../assets/sample-food/brunch-pancakes.jpg" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

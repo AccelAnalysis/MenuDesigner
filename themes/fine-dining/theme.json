@@ -1,0 +1,23 @@
+{
+  "name": "Fine Dining",
+  "id": "fine-dining",
+  "description": "Sophisticated serif typography and muted gold accents",
+  "colors": {
+    "primary": "#d4af37",
+    "background": "#0a0a0a",
+    "surface": "#1c1c1c",
+    "text": "#f5f5f5",
+    "textSecondary": "#bbbbbb",
+    "price": "#d4af37"
+  },
+  "fonts": {
+    "heading": "'Playfair Display', Georgia, serif",
+    "body": "'Lora', Georgia, serif",
+    "price": "'Playfair Display', serif"
+  },
+  "spacing": {
+    "tilePadding": "3rem",
+    "slideMargin": "4rem"
+  },
+  "locked": true
+}

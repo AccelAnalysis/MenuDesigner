@@ -1,0 +1,13 @@
+.theme-fast-casual {
+  --primary: #ff6b35;
+  --bg: #111111;
+  --surface: #222222;
+  --price: #ff6b35;
+  --font-heading: 'Bebas Neue', Impact, sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+  --font-price: 'Bebas Neue', sans-serif;
+}
+.theme-fast-casual .price {
+  font-size: 3.2rem;
+  letter-spacing: 2px;
+}

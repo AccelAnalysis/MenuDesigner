@@ -1,0 +1,40 @@
+{
+  "id": "template-happyhour",
+  "name": "Happy Hour Specials",
+  "theme": "fast-casual",
+  "groups": [
+    {
+      "id": "g1",
+      "name": "Happy Hour",
+      "isActive": true,
+      "slides": [
+        {
+          "id": "s1",
+          "name": "Drinks & Bites",
+          "durationSeconds": 10,
+          "background": { "type": "image", "src": "../assets/sample-food/bar-background.jpg" },
+          "tiles": [
+            {
+              "id": "t1",
+              "type": "item",
+              "position": { "x": 0.1, "y": 0.15, "width": 0.8, "height": 0.25 },
+              "content": { "name": "All Draft Beers", "price": 5, "badges": ["4–7 PM"] }
+            },
+            {
+              "id": "t2",
+              "type": "item",
+              "position": { "x": 0.1, "y": 0.45, "width": 0.8, "height": 0.25 },
+              "content": { "name": "House Margaritas", "price": 6, "badges": ["4–7 PM"] }
+            },
+            {
+              "id": "t3",
+              "type": "item",
+              "position": { "x": 0.1, "y": 0.75, "width": 0.8, "height": 0.2 },
+              "content": { "name": "Nachos / Wings / Sliders", "price": 7, "badges": ["Any appetizer!"] }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

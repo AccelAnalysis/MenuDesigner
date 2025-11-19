@@ -1,0 +1,23 @@
+{
+  "name": "Default",
+  "id": "default",
+  "description": "Clean, neutral look that works everywhere",
+  "colors": {
+    "primary": "#00d4aa",
+    "background": "#0f0f0f",
+    "surface": "#1a1a1a",
+    "text": "#ffffff",
+    "textSecondary": "#aaaaaa",
+    "price": "#00d4aa"
+  },
+  "fonts": {
+    "heading": "'Inter', system-ui, sans-serif",
+    "body": "'Inter', system-ui, sans-serif",
+    "price": "'Inter', system-ui, sans-serif"
+  },
+  "spacing": {
+    "tilePadding": "1.5rem",
+    "slideMargin": "2rem"
+  },
+  "locked": false
+}

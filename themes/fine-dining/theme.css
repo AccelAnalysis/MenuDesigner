@@ -1,0 +1,13 @@
+.theme-fine-dining {
+  --primary: #d4af37;
+  --bg: #0a0a0a;
+  --surface: #1c1c1c;
+  --price: #d4af37;
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Lora', Georgia, serif;
+}
+.theme-fine-dining .tile {
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+.theme-fine-dining .price::before { content: "$"; font-size: 0.7em; }

@@ -1,0 +1,23 @@
+{
+  "name": "Fast Casual",
+  "id": "fast-casual",
+  "description": "Vibrant colors, big text – perfect for quick-service",
+  "colors": {
+    "primary": "#ff6b35",
+    "background": "#111111",
+    "surface": "#222222",
+    "text": "#ffffff",
+    "textSecondary": "#cccccc",
+    "price": "#ff6b35"
+  },
+  "fonts": {
+    "heading": "'Bebas Neue', Impact, sans-serif",
+    "body": "'Montserrat', sans-serif",
+    "price": "'Bebas Neue', sans-serif"
+  },
+  "spacing": {
+    "tilePadding": "2rem",
+    "slideMargin": "1.5rem"
+  },
+  "locked": false
+}

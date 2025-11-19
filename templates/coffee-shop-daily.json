@@ -1,0 +1,40 @@
+{
+  "id": "template-coffee",
+  "name": "Coffee Shop Daily Board",
+  "theme": "default",
+  "groups": [
+    {
+      "id": "g1",
+      "name": "Today’s Offerings",
+      "isActive": true,
+      "slides": [
+        {
+          "id": "s1",
+          "name": "Drinks",
+          "durationSeconds": 12,
+          "background": { "type": "color", "src": "#2c1e16" },
+          "tiles": [
+            {
+              "id": "t1",
+              "type": "item",
+              "position": { "x": 0.1, "y": 0.1, "width": 0.8, "height": 0.25 },
+              "content": { "name": "Featured Latte", "description": "Brown Sugar Oat Shaken Espresso", "price": 6.25 }
+            },
+            {
+              "id": "t2",
+              "type": "item",
+              "position": { "x": 0.1, "y": 0.4, "width": 0.8, "height": 0.2 },
+              "content": { "name": "Drip Coffee", "price": 3.5 }
+            },
+            {
+              "id": "t3",
+              "type": "item",
+              "position": { "x": 0.1, "y": 0.65, "width": 0.8, "height": 0.2 },
+              "content": { "name": "Pastries", "price": 4.5, "description": "Fresh daily from local bakery" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

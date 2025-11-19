@@ -1,0 +1,16 @@
+:root {
+  --primary: #00d4aa;
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --text: #ffffff;
+  --text-secondary: #aaaaaa;
+  --price: #00d4aa;
+  --font-heading: 'Inter', system-ui, sans-serif;
+  --font-body: var(--font-heading);
+  --font-price: var(--font-heading);
+  --tile-padding: 1.5rem;
+}
+
+.theme-default { background: var(--bg); color: var(--text); }
+.tile { background: var(--surface); padding: var(--tile-padding); }
+.price { color: var(--price); font-weight: 700; }

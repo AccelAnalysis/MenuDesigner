@@ -1,0 +1,46 @@
+{
+  "id": "template-finedining",
+  "name": "7-Course Tasting Menu",
+  "theme": "fine-dining",
+  "groups": [
+    {
+      "id": "g1",
+      "name": "Tasting Menu",
+      "isActive": true,
+      "slides": [
+        {
+          "id": "s1",
+          "name": "Tonight’s Journey",
+          "durationSeconds": 15,
+          "background": { "type": "color", "src": "#0a0a0a" },
+          "tiles": [
+            {
+              "id": "t1",
+              "type": "text",
+              "position": { "x": 0.1, "y": 0.15, "width": 0.8, "height": 0.2 },
+              "content": { "text": "Autumn 2025 Tasting Menu", "style": { "fontSize": 48, "textAlign": "center" } }
+            },
+            {
+              "id": "t2",
+              "type": "item",
+              "position": { "x": 0.1, "y": 0.4, "width": 0.8, "height": 0.15 },
+              "content": { "name": "Amuse-Bouche", "description": "Kampachi crudo, yuzu, finger lime" }
+            },
+            {
+              "id": "t3",
+              "type": "item",
+              "position": { "x": 0.1, "y": 0.58, "width": 0.8, "height": 0.15 },
+              "content": { "name": "First", "description": "Foie gras torchon, fig, brioche" }
+            },
+            {
+              "id": "t4",
+              "type": "item",
+              "position": { "x": 0.1, "y": 0.76, "width": 0.8, "height": 0.15 },
+              "content": { "name": "Price", "price": 195, "description": "Wine pairing +$125" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

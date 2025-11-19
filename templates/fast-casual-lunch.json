@@ -1,0 +1,40 @@
+{
+  "id": "template-fastcasual",
+  "name": "Fast Casual Lunch",
+  "theme": "fast-casual",
+  "groups": [
+    {
+      "id": "g1",
+      "name": "Lunch",
+      "isActive": true,
+      "slides": [
+        {
+          "id": "s1",
+          "name": "Bowls & Burgers",
+          "durationSeconds": 10,
+          "background": { "type": "image", "src": "../assets/sample-food/burger-hero.jpg" },
+          "tiles": [
+            {
+              "id": "t1",
+              "type": "item",
+              "position": { "x": 0.05, "y": 0.1, "width": 0.42, "height": 0.3 },
+              "content": { "name": "Smash Burger", "price": 11.99 }
+            },
+            {
+              "id": "t2",
+              "type": "item",
+              "position": { "x": 0.53, "y": 0.1, "width": 0.42, "height": 0.3 },
+              "content": { "name": "Korean BBQ Bowl", "price": 13.99 }
+            },
+            {
+              "id": "t3",
+              "type": "item",
+              "position": { "x": 0.05, "y": 0.45, "width": 0.9, "height": 0.2 },
+              "content": { "name": "Add Fries + Drink → Combo −$2", "style": { "color": "#ff6b35", "fontSize": 36 } }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
