@@ -1,4 +1,4 @@
-import { on } from '../../core/events.js';
+import { emit, on } from '../../core/events.js';
 import { editorState } from '../../core/state.js';
 
 export const mountHistoryPanel = (container) => {
@@ -26,7 +26,28 @@ export const mountHistoryPanel = (container) => {
   };
   renderButtons();
   editorState.subscribe(renderButtons);
-  on('history:update', ({ entries }) => {
-    list.innerHTML = entries.map((entry) => `<li data-id="${entry.id}">${entry.label}</li>`).join('');
+  list.addEventListener('click', (event) => {
+    const button = event.target.closest('button[data-entry]');
+    if (!button) return;
+    emit('history:restore', { id: button.dataset.entry });
   });
+
+  const renderHistory = (entries = []) => {
+    if (!entries.length) {
+      list.innerHTML = '<li class="empty">No snapshots yet</li>';
+      return;
+    }
+    list.innerHTML = entries
+      .map(
+        (entry) => `
+          <li>
+            <button type="button" data-entry="${entry.id}">${entry.label}</button>
+          </li>
+        `
+      )
+      .join('');
+  };
+
+  on('history:update', ({ entries }) => renderHistory(entries));
+  renderHistory();
 };
