@@ -44,12 +44,21 @@ const normalizePrice = (value) => {
 
 const normalizeTile = (tile = {}, index = 0) => {
   const content = tile.content ?? {};
+  const media = typeof tile.media === 'object' && tile.media ? tile.media : null;
+  const type = safeText(tile.type, 'item').toLowerCase();
+  const qrUrl = safeText(content.qrUrl, '');
+  const videoUrl = safeText(content.videoUrl, '') || (media?.type === 'video' ? safeText(media.src, '') : '');
+  const qrImage = safeText(content.qrImage, '') || (type === 'qr' ? safeText(content.src ?? media?.src, '') : '');
   return {
     id: ensureId(tile.id, `tile-${index + 1}`),
     heading: safeText(content.heading ?? content.name ?? `Item ${index + 1}`, `Item ${index + 1}`),
     description: safeText(content.subheading ?? content.body ?? content.description, ''),
     price: normalizePrice(content.price ?? tile.price),
     badges: normalizeBadges(content.badges),
+    type,
+    qrUrl,
+    qrImage,
+    videoUrl,
   };
 };
 
@@ -88,7 +97,7 @@ const renderBadges = (badges) =>
     ? `<div class="player-badges">${badges.map((badge) => `<span class="player-badge">${escapeHtml(badge)}</span>`).join('')}</div>`
     : '';
 
-const renderTile = (tile) => {
+const renderStandardTile = (tile) => {
   const description = tile.description
     ? `<p class="player-tile-description">${escapeHtml(tile.description)}</p>`
     : '';
@@ -104,6 +113,66 @@ const renderTile = (tile) => {
       ${price}
     </li>
   `;
+};
+
+const renderQrTile = (tile) => {
+  const qrSource = tile.qrImage || tile.qrUrl;
+  const badgeMarkup = renderBadges(tile.badges);
+  const description = tile.description
+    ? `<p class="player-tile-description">${escapeHtml(tile.description)}</p>`
+    : '';
+  const qrVisual = qrSource
+    ? `<img class="player-qr-image" src="${escapeHtml(qrSource)}" alt="QR code for ${escapeHtml(tile.heading)}" loading="lazy" decoding="async" />`
+    : `<div class="player-qr-placeholder" aria-hidden="true"></div>`;
+  const qrLink = tile.qrUrl
+    ? `<p class="player-qr-link">${escapeHtml(tile.qrUrl)}</p>`
+    : '';
+  return `
+    <li class="player-tile player-tile--qr" data-tile="${escapeHtml(tile.id)}" data-qr="${escapeHtml(tile.qrUrl || '')}">
+      <div class="player-qr-code">${qrVisual}</div>
+      <div class="player-tile-content">
+        <p class="player-tile-heading">${escapeHtml(tile.heading)}</p>
+        ${description}
+        ${badgeMarkup}
+        <p class="player-qr-hint">Scan the code to learn more</p>
+        ${qrLink}
+      </div>
+    </li>
+  `;
+};
+
+const renderVideoTile = (tile) => {
+  if (!tile.videoUrl) {
+    return renderStandardTile(tile);
+  }
+  const description = tile.description
+    ? `<p class="player-tile-description">${escapeHtml(tile.description)}</p>`
+    : '';
+  const badges = renderBadges(tile.badges);
+  return `
+    <li class="player-tile player-tile--video" data-tile="${escapeHtml(tile.id)}">
+      <div class="player-video-shell">
+        <video class="player-video" src="${escapeHtml(tile.videoUrl)}" autoplay muted loop playsinline>
+          Sorry, your device cannot play this video.
+        </video>
+      </div>
+      <div class="player-tile-content">
+        <p class="player-tile-heading">${escapeHtml(tile.heading)}</p>
+        ${description}
+        ${badges}
+      </div>
+    </li>
+  `;
+};
+
+const TILE_RENDERERS = {
+  qr: renderQrTile,
+  video: renderVideoTile,
+};
+
+const renderTile = (tile) => {
+  const renderer = TILE_RENDERERS[tile.type];
+  return (renderer || renderStandardTile)(tile);
 };
 
 const renderSlide = (slide) => `
@@ -125,13 +194,24 @@ const renderGroup = (group) => `
   </section>
 `;
 
+const applyTheme = (theme) => {
+  const normalizedTheme = safeText(theme, 'default').toLowerCase() || 'default';
+  if (typeof document !== 'undefined') {
+    document.documentElement?.setAttribute('data-player-theme', normalizedTheme);
+  }
+  return normalizedTheme;
+};
+
 export const render = (menu) => {
   const normalized = normalizeMenu(menu);
   const root = document.getElementById('player-root');
   if (!root) return;
+  const themeName = applyTheme(normalized.theme);
   if (!normalized.groups.length) {
     root.innerHTML = '<p class="player-empty">This menu does not have any groups yet.</p>';
     return;
   }
-  root.innerHTML = `<div class="player-shell">${normalized.groups.map(renderGroup).join('')}</div>`;
+  root.innerHTML = `<div class="player-shell" data-theme="${escapeHtml(themeName)}">${normalized.groups
+    .map(renderGroup)
+    .join('')}</div>`;
 };

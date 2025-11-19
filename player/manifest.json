@@ -1,9 +1,27 @@
 {
+  "id": "digital-menu-player",
   "name": "Digital Menu Player",
   "short_name": "Menu Player",
+  "description": "Installable player for Digital Menu Studio playlists.",
   "display": "standalone",
-  "start_url": "/player/",
-  "background_color": "#000000",
+  "start_url": "/player/?source=pwa",
+  "scope": "/player/",
+  "background_color": "#020617",
   "theme_color": "#111827",
-  "icons": []
+  "orientation": "landscape",
+  "categories": ["food", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/player/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/player/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
 }
