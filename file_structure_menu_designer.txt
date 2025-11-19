@@ -1,0 +1,66 @@
+digital-menu-studio/
+├─ editor/
+│  ├─ index.html
+│  ├─ styles/                     # (unchanged – all original CSS)
+│  ├─ scripts/
+│  │  ├─ main-editor.js
+│  │  ├─ core/
+│  │  │  ├─ config.js
+│  │  │  ├─ models.js
+│  │  │  ├─ state.js             # ← now uses Zustand with undo/redo middleware
+│  │  │  ├─ storage.js           # localStorage + auto-version history
+│  │  │  └─ events.js
+│  │  ├─ features/
+│  │  │  ├─ menu-groups.js
+│  │  │  ├─ slides.js
+│  │  │  ├─ tiles.js
+│  │  │  ├─ image-library.js
+│  │  │  ├─ grid.js
+│  │  │  ├─ presentation.js
+│  │  │  ├─ export-player.js
+│  │  │  ├─ remote-sync.js            ← LIVE REMOTE: direct PUT with pre-signed URL
+│  │  │  ├─ history.js                ← UNDO/REDO + version history panel (auto-snapshots)
+│  │  │  └─ conflict-resolution.js    ← detects-when-save-fails modal + merge helper
+│  │  ├─ ui/
+│  │  │  ├─ panel.js
+│  │  │  ├─ panel-sections/
+│  │  │  │  ├─ remote-panel.js            ← “Live Remote” URL + token + Save & Publish
+│  │  │  │  ├─ history-panel.js           ← “History” tab with 20 auto-saved versions
+│  │  │  │  ├─ conflict-modal.js          ← “Sarah saved 2 min ago – reload or force?”
+│  │  │  │  └─ … (all original panels)
+│  │  │  ├─ canvas.js
+│  │  │  ├─ slide-strip.js
+│  │  │  ├─ live-status-bar.js            ← top-right: Synced · Saving · Offline · Conflict
+│  │  │  └─ shortcuts.js                  ← now includes Ctrl+Z / Ctrl+Y
+│  │  └─ utils/
+│  │     ├─ drag-resize.js
+│  │     └─ signed-url.js                 ← tiny helper to refresh expired pre-signed URLs
+│  └─ assets/ … (unchanged)
+│
+├─ player/                              # Now a full PWA
+│  ├─ index.html
+│  ├─ manifest.json                    ← NEW – makes Player installable on tablets/TVs
+│  ├─ service-worker.js                ← NEW – caches config + assets, offline-first
+│  ├─ styles/ … (unchanged)
+│  ├─ scripts/
+│  │  ├─ main-player.js
+│  │  ├─ render.js
+│  │  ├─ schedule.js
+│  │  ├─ animations.js
+│  │  ├─ auto-refresh.js          ← polls remote config every 3 min (with ETag)
+│  │  └─ cache-first.js           ← uses IndexedDB + service worker for instant load
+│  └─ assets/fonts/ … (unchanged)
+│
+├─ shared/
+│  ├─ validator.js                     ← tiny runtime validator (used by both apps)
+│  └─ version.js                        ← single source for app version (shown in conflict modal)
+│
+├─ export-kits/ …                       # unchanged – still supports USB/offline
+├─ themes/ …                            # unchanged
+├─ templates/ …                         # unchanged
+├─ docs/
+│  ├─ live-remote-quickstart.md
+│  ├─ pwa-install-guide.md             ← “How to add Player to home screen”
+│  └─ conflict-resolution.md
+└─ package.json (optional)
+   └─ devDependencies: zustand, idb-keyval   ← only ~9 KB gzipped total
