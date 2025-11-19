@@ -1,0 +1,9 @@
+{
+  "name": "Digital Menu Player",
+  "short_name": "Menu Player",
+  "display": "standalone",
+  "start_url": "/player/",
+  "background_color": "#000000",
+  "theme_color": "#111827",
+  "icons": []
+}
