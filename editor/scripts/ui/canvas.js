@@ -1,17 +1,55 @@
 import { getActiveSlide } from '../core/state.js';
 import { createGridPattern, normalizePosition, positionToPixels, snapPointToGrid } from '../features/grid.js';
-import { setActiveTile, updateTilePosition } from '../features/tiles.js';
+import { openTileEditor, setActiveTile, updateTilePosition } from '../features/tiles.js';
 
 const escapeHtml = (value = '') =>
   String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 
+const supportedTileTypes = new Set(['text', 'price', 'promo', 'qr', 'video']);
+
+const resolveTileType = (tile) => {
+  const type = tile?.type ? String(tile.type).toLowerCase() : 'text';
+  if (type === 'item') return 'text';
+  return supportedTileTypes.has(type) ? type : 'text';
+};
+
 const renderTileMarkup = (tile) => {
-  const heading = escapeHtml(tile.content?.heading ?? 'New item');
-  const price = escapeHtml(tile.content?.price ?? '');
-  const subheading = escapeHtml(tile.content?.subheading ?? tile.content?.body ?? 'Tap to edit content');
-  const badges = Array.isArray(tile.content?.badges) ? tile.content.badges : [];
+  const type = resolveTileType(tile);
+  const layoutVariant = tile.style?.layoutVariant ?? 'classic';
+  const isSplit = layoutVariant === 'split';
+  const isMinimal = layoutVariant === 'minimal';
+  const content = tile.content ?? {};
+  const heading = escapeHtml(content.heading ?? 'New item');
+  const subheadingRaw = content.subheading ?? '';
+  const bodyRaw = content.body ?? '';
+  const priceRaw = content.price ?? '';
+  const qrUrl = content.qrUrl ?? '';
+  const videoUrl = content.videoUrl ?? '';
   const accent = tile.style?.accentColor ?? '#2563eb';
-  const badgesMarkup = badges
+  const badges = Array.isArray(content.badges) ? content.badges : [];
+  const price = priceRaw ? escapeHtml(priceRaw) : '';
+  const rowStyles = ['display:flex', 'gap:1rem', 'font-weight:600'];
+  if (isSplit) {
+    rowStyles.push('flex-direction:column', 'align-items:flex-start', 'justify-content:flex-start');
+  } else {
+    rowStyles.push(`align-items:${price ? 'center' : 'flex-start'}`);
+    rowStyles.push(`justify-content:${price ? 'space-between' : 'flex-start'}`);
+  }
+  const priceMarkup = price
+    ? `<span class="tile-price" style="white-space:nowrap; font-size:${isSplit ? '0.85em' : '1em'}; align-self:${
+        isSplit ? 'flex-start' : 'center'
+      };">${price}</span>`
+    : '';
+  const secondarySource =
+    type === 'promo' || type === 'video' || type === 'qr'
+      ? bodyRaw || subheadingRaw
+      : subheadingRaw || bodyRaw;
+  const fallbackText = type === 'promo' ? 'Add promo details' : 'Tap to edit content';
+  const secondary = escapeHtml((secondarySource ?? fallbackText) || fallbackText);
+  const secondaryMarkup = !isMinimal
+    ? `<p class="tile-subheading" style="margin:0.25rem 0 0; font-size:0.6em; opacity:0.9;">${secondary}</p>`
+    : '';
+  const badgeNodes = badges
     .filter((badge) => Boolean(badge))
     .map(
       (badge) =>
@@ -20,15 +58,34 @@ const renderTileMarkup = (tile) => {
         )}</span>`
     )
     .join('');
+  const badgesMarkup = !isMinimal && badgeNodes
+    ? `<div class="tile-badges" style="display:flex; gap:0.35rem; flex-wrap:wrap; margin-top:0.35rem;">${badgeNodes}</div>`
+    : '';
+  const extras = [];
+  if (type === 'qr' && qrUrl) {
+    extras.push(
+      `<p class="tile-qr-url" style="margin:0.4rem 0 0; font-size:0.55em; word-break:break-all; color:${accent};">${escapeHtml(
+        qrUrl
+      )}</p>`
+    );
+  }
+  if (type === 'video' && videoUrl) {
+    extras.push(
+      `<p class="tile-video-url" style="margin:0.5rem 0 0; font-size:0.55em; word-break:break-all; opacity:0.75;">${escapeHtml(
+        videoUrl
+      )}</p>`
+    );
+  }
 
   return `
     <div class="tile-content" style="color:${tile.style?.textColor ?? '#0f172a'}; text-align:${tile.style?.textAlign ?? 'left'}; font-size:${tile.style?.fontSize ?? 32}px;">
-      <div class="tile-row" style="display:flex; justify-content:space-between; gap:1rem; font-weight:600;">
+      <div class="tile-row" style="${rowStyles.join('; ')};">
         <span class="tile-heading">${heading}</span>
-        <span class="tile-price">${price}</span>
+        ${priceMarkup}
       </div>
-      <p class="tile-subheading" style="margin:0.25rem 0 0; font-size:0.6em; opacity:0.9;">${subheading}</p>
-      <div class="tile-badges" style="display:flex; gap:0.35rem; flex-wrap:wrap; margin-top:0.35rem;">${badgesMarkup}</div>
+      ${secondaryMarkup}
+      ${badgesMarkup}
+      ${extras.join('')}
     </div>
   `;
 };
@@ -292,6 +349,7 @@ export const registerCanvas = (store) => {
         userSelect: 'none',
       });
       tileEl.innerHTML = renderTileMarkup(tile);
+      tileEl.addEventListener('dblclick', () => openTileEditor(tile.id));
       const isSelected = tile.id === selectedTileId;
       applySelectionStyles(tileEl, isSelected);
       if (isSelected) {
