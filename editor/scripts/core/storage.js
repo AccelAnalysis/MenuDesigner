@@ -9,10 +9,14 @@ const upgradeLegacySnapshot = (snapshot) => {
   if (!snapshot) return buildInitialSnapshot(createMenuConfig());
   if (snapshot.config) return snapshot;
   const config = createMenuConfig({ groups: snapshot.groups ?? [] });
+  const firstGroup = config.groups[0];
+  const firstSlide = firstGroup?.slides[0];
+  const firstTile = firstSlide?.tiles[0];
   return {
     config,
-    activeGroupId: snapshot.activeGroupId ?? config.groups[0]?.id ?? null,
-    activeSlideId: snapshot.activeSlideId ?? config.groups[0]?.slides[0]?.id ?? null,
+    activeGroupId: snapshot.activeGroupId ?? firstGroup?.id ?? null,
+    activeSlideId: snapshot.activeSlideId ?? firstSlide?.id ?? null,
+    activeTileId: snapshot.activeTileId ?? firstTile?.id ?? null,
     dirtySince: snapshot.dirtySince ?? null,
   };
 };

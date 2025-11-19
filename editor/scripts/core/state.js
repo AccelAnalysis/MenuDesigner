@@ -9,18 +9,41 @@ const clone = (value) =>
 
 const initialConfig = createMenuConfig();
 
-export const buildInitialSnapshot = (config) => ({
-  config,
-  activeGroupId: config.groups[0]?.id ?? null,
-  activeSlideId: config.groups[0]?.slides[0]?.id ?? null,
-  dirtySince: null,
-});
+const getInitialIds = (config) => {
+  const firstGroup = config.groups[0];
+  const firstSlide = firstGroup?.slides[0];
+  const firstTile = firstSlide?.tiles[0];
+  return {
+    groupId: firstGroup?.id ?? null,
+    slideId: firstSlide?.id ?? null,
+    tileId: firstTile?.id ?? null,
+  };
+};
+
+export const buildInitialSnapshot = (config) => {
+  const ids = getInitialIds(config);
+  return {
+    config,
+    activeGroupId: ids.groupId,
+    activeSlideId: ids.slideId,
+    activeTileId: ids.tileId,
+    dirtySince: null,
+  };
+};
 
 const pushHistory = (state, nextSnapshot) => ({
   snapshot: nextSnapshot,
   __history: [...state.__history, state.snapshot].slice(-HISTORY_LIMIT),
   __future: [],
 });
+
+const applySnapshot = (state, nextSnapshot, { recordHistory = true, stamp = true } = {}) => {
+  const prepared = stamp ? stampSnapshot(nextSnapshot) : nextSnapshot;
+  if (!recordHistory) {
+    return { ...state, snapshot: prepared };
+  }
+  return pushHistory(state, prepared);
+};
 
 const stampSnapshot = (snapshot) => {
   const timestamp = new Date().toISOString();
@@ -35,15 +58,15 @@ export const editorState = createStore((set) => ({
   __history: [],
   __future: [],
   remoteStatus: 'idle',
-  mutateSnapshot(mutator) {
+  mutateSnapshot(mutator, options) {
     set((state) => {
       const draft = clone(state.snapshot);
       const result = mutator(draft) ?? draft;
-      return pushHistory(state, stampSnapshot(result));
+      return applySnapshot(state, result, options);
     });
   },
-  replaceSnapshot(nextSnapshot) {
-    set((state) => pushHistory(state, stampSnapshot(clone(nextSnapshot))));
+  replaceSnapshot(nextSnapshot, options) {
+    set((state) => applySnapshot(state, clone(nextSnapshot), options));
   },
   undo() {
     set((state) => {
@@ -80,4 +103,9 @@ export const getActiveGroup = (snapshot) =>
 export const getActiveSlide = (snapshot) => {
   const group = getActiveGroup(snapshot);
   return group?.slides.find((slide) => slide.id === snapshot.activeSlideId) ?? group?.slides[0];
+};
+
+export const getActiveTile = (snapshot) => {
+  const slide = getActiveSlide(snapshot);
+  return slide?.tiles.find((tile) => tile.id === snapshot.activeTileId) ?? slide?.tiles[0];
 };
