@@ -1,38 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Digital Menu Studio · Editor</title>
-
-    <!-- Keep your CSS exactly where it is -->
-    <link rel="stylesheet" href="styles/app.css" />
-
-    <!-- NEW: Use CDN for zustand (this replaces the broken node_modules path) -->
-    <script type="importmap">
-    {
-      "imports": {
-        "zustand": "https://cdn.jsdelivr.net/npm/zustand@4.5.5/+esm",
-        "zustand/vanilla": "https://cdn.jsdelivr.net/npm/zustand@4.5.5/vanilla/+esm",
-        "zustand/middleware": "https://cdn.jsdelivr.net/npm/zustand@4.5.5/middleware/+esm"
-      }
-    }
-    </script>
+    <meta charset="utf-8">
+    <title>Digital Menu Studio</title>
+    <meta http-equiv="refresh" content="0; url=/digital-menu-studio/editor/">
+    <style>body{font-family:system-ui;background:#111;color:#fff;text-align:center;padding:4rem}</style>
   </head>
   <body>
-    <div id="app">
-      <header class="top-bar">
-        <h1>Digital Menu Studio</h1>
-        <span class="live-status" data-status="offline">Offline</span>
-      </header>
-      <main class="workspace">
-        <section class="canvas" id="canvas"></section>
-        <aside class="panel" id="panel"></aside>
-      </main>
-      <footer class="slide-strip" id="slide-strip"></footer>
-    </div>
-
-    <!-- This path stays exactly the same -->
-    <script type="module" src="scripts/main-editor.js"></script>
+    <h1>Digital Menu Studio</h1>
+    <p><a href="/digital-menu-studio/editor/">→ Open Editor</a></p>
+    <p><a href="/digital-menu-studio/player/">→ Open Player</a></p>
+    <small>Redirecting…</small>
   </body>
 </html>
