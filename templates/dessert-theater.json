@@ -1,0 +1,96 @@
+{
+  "id": "template-dessert-theater",
+  "name": "Dessert Theater",
+  "theme": "fine-dining",
+  "groups": [
+    {
+      "id": "g1",
+      "name": "Late Night Sweets",
+      "isActive": true,
+      "slides": [
+        {
+          "id": "s1",
+          "name": "Plated Desserts",
+          "durationSeconds": 13,
+          "background": { "type": "color", "src": "#0a0a0a" },
+          "tiles": [
+            {
+              "id": "t1",
+              "type": "text",
+              "position": { "x": 0.12, "y": 0.08, "width": 0.76, "height": 0.14 },
+              "content": { "text": "Dessert Theater", "style": { "fontSize": 48, "textAlign": "center" } }
+            },
+            {
+              "id": "t2",
+              "type": "item",
+              "position": { "x": 0.12, "y": 0.26, "width": 0.35, "height": 0.2 },
+              "content": { "name": "Chocolate Curtain", "price": 14, "description": "70% cacao mousse, smoked salt caramel" }
+            },
+            {
+              "id": "t3",
+              "type": "item",
+              "position": { "x": 0.53, "y": 0.26, "width": 0.35, "height": 0.2 },
+              "content": { "name": "Citrus Spotlight", "price": 13, "description": "yuzu curd, grapefruit sorbet, brûléed meringue" }
+            },
+            {
+              "id": "t4",
+              "type": "item",
+              "position": { "x": 0.12, "y": 0.5, "width": 0.35, "height": 0.2 },
+              "content": { "name": "Caramel Act II", "price": 12, "description": "butterscotch pot de crème, cocoa nib crumble" }
+            },
+            {
+              "id": "t5",
+              "type": "item",
+              "position": { "x": 0.53, "y": 0.5, "width": 0.35, "height": 0.2 },
+              "content": { "name": "Berry Finale", "price": 12, "description": "marinated berries, mascarpone chantilly" }
+            },
+            {
+              "id": "t6",
+              "type": "image",
+              "position": { "x": 0.12, "y": 0.74, "width": 0.76, "height": 0.2 },
+              "content": { "src": "../assets/sample-food/dessert-plating.jpg" }
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "name": "Digestifs",
+          "durationSeconds": 10,
+          "background": { "type": "color", "src": "#121212" },
+          "tiles": [
+            {
+              "id": "t7",
+              "type": "text",
+              "position": { "x": 0.1, "y": 0.1, "width": 0.8, "height": 0.12 },
+              "content": { "text": "Digestifs", "style": { "fontSize": 44, "textAlign": "center" } }
+            },
+            {
+              "id": "t8",
+              "type": "item",
+              "position": { "x": 0.1, "y": 0.26, "width": 0.36, "height": 0.22 },
+              "content": { "name": "Espresso Martini", "price": 15, "description": "vodka, cold brew, vanilla syrup" }
+            },
+            {
+              "id": "t9",
+              "type": "item",
+              "position": { "x": 0.54, "y": 0.26, "width": 0.36, "height": 0.22 },
+              "content": { "name": "Amaro Flight", "price": 18, "description": "three 1 oz pours, rotating selection" }
+            },
+            {
+              "id": "t10",
+              "type": "item",
+              "position": { "x": 0.1, "y": 0.54, "width": 0.36, "height": 0.22 },
+              "content": { "name": "Royal Tokaji", "price": 16, "description": "5 puttonyos, apricot and honey" }
+            },
+            {
+              "id": "t11",
+              "type": "item",
+              "position": { "x": 0.54, "y": 0.54, "width": 0.36, "height": 0.22 },
+              "content": { "name": "Single Origin Coffee", "price": 6, "description": "Guatemala La Esperanza, V60" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

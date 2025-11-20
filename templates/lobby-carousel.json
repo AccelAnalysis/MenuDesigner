@@ -1,0 +1,84 @@
+{
+  "id": "template-lobby-carousel",
+  "name": "Hotel Lobby Carousel",
+  "theme": "default",
+  "groups": [
+    {
+      "id": "g1",
+      "name": "Lobby Screens",
+      "isActive": true,
+      "slides": [
+        {
+          "id": "s1",
+          "name": "Morning Coffee",
+          "durationSeconds": 12,
+          "background": { "type": "color", "src": "#111827" },
+          "tiles": [
+            {
+              "id": "t1",
+              "type": "text",
+              "position": { "x": 0.08, "y": 0.08, "width": 0.84, "height": 0.15 },
+              "content": { "text": "Morning Coffee Bar", "style": { "fontSize": 44, "textAlign": "center" } }
+            },
+            {
+              "id": "t2",
+              "type": "image",
+              "position": { "x": 0.08, "y": 0.27, "width": 0.84, "height": 0.35 },
+              "content": { "src": "../assets/sample-food/cappuccino.jpg" }
+            },
+            {
+              "id": "t3",
+              "type": "item",
+              "position": { "x": 0.08, "y": 0.65, "width": 0.38, "height": 0.22 },
+              "content": { "name": "Flat White", "price": 5, "description": "microfoam, single-origin espresso" }
+            },
+            {
+              "id": "t4",
+              "type": "item",
+              "position": { "x": 0.54, "y": 0.65, "width": 0.38, "height": 0.22 },
+              "content": { "name": "Matcha Latte", "price": 6, "description": "ceremonial grade, vanilla oat" }
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "name": "Afternoon Bites",
+          "durationSeconds": 12,
+          "background": { "type": "image", "src": "../assets/sample-food/charcuterie.jpg" },
+          "tiles": [
+            {
+              "id": "t5",
+              "type": "text",
+              "position": { "x": 0.06, "y": 0.08, "width": 0.88, "height": 0.12 },
+              "content": { "text": "Afternoon Bites", "style": { "fontSize": 42, "textAlign": "left" } }
+            },
+            {
+              "id": "t6",
+              "type": "item",
+              "position": { "x": 0.06, "y": 0.22, "width": 0.42, "height": 0.22 },
+              "content": { "name": "Cheese Board", "price": 18, "description": "local selections, fig jam, lavash" }
+            },
+            {
+              "id": "t7",
+              "type": "item",
+              "position": { "x": 0.52, "y": 0.22, "width": 0.42, "height": 0.22 },
+              "content": { "name": "Heirloom Tomato Tart", "price": 14, "description": "puff pastry, basil pesto" }
+            },
+            {
+              "id": "t8",
+              "type": "item",
+              "position": { "x": 0.06, "y": 0.52, "width": 0.42, "height": 0.22 },
+              "content": { "name": "Shrimp Cocktail", "price": 16, "description": "poached gulf shrimp, lemon, horseradish" }
+            },
+            {
+              "id": "t9",
+              "type": "item",
+              "position": { "x": 0.52, "y": 0.52, "width": 0.42, "height": 0.22 },
+              "content": { "name": "Seasonal Crudités", "price": 12, "description": "green goddess, sesame crunch" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
